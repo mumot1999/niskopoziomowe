@@ -21,6 +21,9 @@ double d(double n) {
 }
 
 typedef double(*VoidFunction) (double);
+typedef void(*VoidFunction) ();
+typedef void(*VoidFunction) (int, int);
+//typedef void(*VoidFunction) (*Pracownik, int);
 
 int main()
 {
