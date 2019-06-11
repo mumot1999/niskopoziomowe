@@ -13,9 +13,6 @@ double b(double n) {
 }
 
 double c(double n) {
-	if (n == 0) {
-		throw "Nie mozna przeprowadzic operacji log(0) !!!";
-	}
 	return log10(pow(n, 2.0) + 1.21);
 }
 
