@@ -1,15 +1,20 @@
+// ConsoleApplication3.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
+//
+
+#include "pch.h"
+#include <iostream>
+
 struct FileData {
 	int count;
 	unsigned *data;
 };
 
-int zerosBin(int n) {
+int zerosBin(unsigned n) {
 	int num_zeroes = 0;
 	int flagFoundOne = 0;
-	for (int i = sizeof(unsigned)*8; i>=0; i--)
+	for (int i = sizeof(unsigned)*8; i; i--)
 	{
-
-		int mask = (1 << i);
+		int mask = (1 << i-1);
 		int bit = n & mask;
 		if (bit)
 			flagFoundOne = 1;
@@ -26,6 +31,10 @@ int onesBin(unsigned n) {
 		n >>= 1;
 	}
 	return ones;
+}
+
+bool lastFirstBit(unsigned n) {
+	return (n & (1 << (sizeof(unsigned) * 8 - 1)) && n & 1);
 }
 
 
@@ -73,17 +82,58 @@ void A(FileData fileData) {
 	writeToFile(newFileData, "A.txt");
 };
 
-typedef void(*Function) ();
+void B(FileData fileData) {
+	FileData newFileData;
+	newFileData.count = 0;
+	int T = 2;
+	unsigned* data = new unsigned[fileData.count];
+
+	for (int i = 0; i < fileData.count; i++) {
+		int zeros = zerosBin(fileData.data[i]);
+		if (zeros >= T) {
+			data[newFileData.count] = fileData.data[i];
+			newFileData.count++;
+		}
+	}
+	newFileData.data = data;
+	writeToFile(newFileData, "B.txt");
+};
+
+void C(FileData fileData) {
+	FileData newFileData;
+	newFileData.count = 0;
+	int R = 2;
+	unsigned* data = new unsigned[fileData.count];
+
+	for (int i = 0; i < fileData.count; i++) {
+		if (lastFirstBit(fileData.data[i])) {
+			data[newFileData.count] = fileData.data[i];
+			newFileData.count++;
+		}
+	}
+	newFileData.data = data;
+	writeToFile(newFileData, "C.txt");
+};
+
+typedef void(*Function) (FileData);
 
 
 
 
 int main()
 {
-	printf_s("%d\n", zerosBin(3));
-	printf_s("%d\n", sizeof(int)*8);
+
+	Function functions[] = {
+		A,
+		B,
+		C
+	};
+
 
 	FileData fileData;
 	fileData = readFromFile("data.txt");
+
 	A(fileData);
+	B(fileData);
+	C(fileData);
 }
