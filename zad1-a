@@ -39,7 +39,12 @@ bool lastFirstBit(unsigned n) {
 
 
 
-FileData readFromFile(const char fileName[]) {
+FileData readFromFile() {
+	char fileName[32];
+
+	printf_s("Podaj nazwe pliku do wczytania: ");
+	scanf_s("%s", fileName, 31);
+
 	FileData fileData;
 	FILE *pFile;
 	fopen_s(&pFile, fileName, "r"); // read mode
@@ -55,7 +60,12 @@ FileData readFromFile(const char fileName[]) {
 	return fileData;
 }
 
-void writeToFile(FileData fileData, const char fileName[]) {
+void writeToFile(FileData fileData) {
+	char fileName[32];
+
+	printf_s("Podaj nazwe pliku: ");
+	scanf_s("%s", fileName, 31);
+
 	FILE *pFile;
 	fopen_s(&pFile, fileName, "wt"); // read mode
 	fprintf_s(pFile, "%d\n", fileData.count);
@@ -68,7 +78,9 @@ void writeToFile(FileData fileData, const char fileName[]) {
 void A(FileData fileData) {
 	FileData newFileData;
 	newFileData.count = 0;
-	int R = 2;
+	int R;
+	printf_s("Podaj liczbe R: ");
+	scanf_s("%d", &R);
 	unsigned* data = new unsigned[fileData.count];
 
 	for (int i = 0; i < fileData.count; i++) {
@@ -79,13 +91,15 @@ void A(FileData fileData) {
 		}
 	}
 	newFileData.data = data;
-	writeToFile(newFileData, "A.txt");
+	writeToFile(newFileData);
 };
 
 void B(FileData fileData) {
 	FileData newFileData;
 	newFileData.count = 0;
-	int T = 2;
+	int T;
+	printf_s("Podaj liczbe T: ");
+	scanf_s("%d", &T);
 	unsigned* data = new unsigned[fileData.count];
 
 	for (int i = 0; i < fileData.count; i++) {
@@ -96,7 +110,7 @@ void B(FileData fileData) {
 		}
 	}
 	newFileData.data = data;
-	writeToFile(newFileData, "B.txt");
+	writeToFile(newFileData);
 };
 
 void C(FileData fileData) {
@@ -105,6 +119,7 @@ void C(FileData fileData) {
 	int R = 2;
 	unsigned* data = new unsigned[fileData.count];
 
+
 	for (int i = 0; i < fileData.count; i++) {
 		if (lastFirstBit(fileData.data[i])) {
 			data[newFileData.count] = fileData.data[i];
@@ -112,13 +127,10 @@ void C(FileData fileData) {
 		}
 	}
 	newFileData.data = data;
-	writeToFile(newFileData, "C.txt");
+	writeToFile(newFileData);
 };
 
 typedef void(*Function) (FileData);
-
-
-
 
 int main()
 {
@@ -129,9 +141,8 @@ int main()
 		C
 	};
 
-
 	FileData fileData;
-	fileData = readFromFile("data.txt");
+	fileData = readFromFile();
 
 	A(fileData);
 	B(fileData);
