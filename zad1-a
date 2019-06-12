@@ -1,0 +1,89 @@
+struct FileData {
+	int count;
+	unsigned *data;
+};
+
+int zerosBin(int n) {
+	int num_zeroes = 0;
+	int flagFoundOne = 0;
+	for (int i = sizeof(unsigned)*8; i>=0; i--)
+	{
+
+		int mask = (1 << i);
+		int bit = n & mask;
+		if (bit)
+			flagFoundOne = 1;
+		if (!bit && flagFoundOne)
+			num_zeroes++;
+	}
+	return num_zeroes;
+}
+
+int onesBin(unsigned n) {
+	int ones = 0;
+	while (n != 0) {
+		ones += (n & 1);
+		n >>= 1;
+	}
+	return ones;
+}
+
+
+
+FileData readFromFile(const char fileName[]) {
+	FileData fileData;
+	FILE *pFile;
+	fopen_s(&pFile, fileName, "r"); // read mode
+	int _count;
+	fscanf_s(pFile, "%d", &_count);
+	fileData.data = new unsigned[_count];
+
+	for (int i = 0; i < _count; i++) {
+		fscanf_s(pFile, "%d", &(fileData.data[i]));
+	}
+	fileData.count = _count;
+
+	return fileData;
+}
+
+void writeToFile(FileData fileData, const char fileName[]) {
+	FILE *pFile;
+	fopen_s(&pFile, fileName, "wt"); // read mode
+	fprintf_s(pFile, "%d\n", fileData.count);
+
+	for (int i = 0; i < fileData.count; i++) {
+		fprintf_s(pFile, "%d\n", fileData.data[i]);
+	}
+}
+
+void A(FileData fileData) {
+	FileData newFileData;
+	newFileData.count = 0;
+	int R = 2;
+	unsigned* data = new unsigned[fileData.count];
+
+	for (int i = 0; i < fileData.count; i++) {
+		int ones = onesBin(fileData.data[i]);
+		if (ones == R) {
+			data[newFileData.count] = fileData.data[i];
+			newFileData.count++;
+		}
+	}
+	newFileData.data = data;
+	writeToFile(newFileData, "A.txt");
+};
+
+typedef void(*Function) ();
+
+
+
+
+int main()
+{
+	printf_s("%d\n", zerosBin(3));
+	printf_s("%d\n", sizeof(int)*8);
+
+	FileData fileData;
+	fileData = readFromFile("data.txt");
+	A(fileData);
+}
