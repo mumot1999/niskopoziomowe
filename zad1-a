@@ -34,7 +34,7 @@ int onesBin(unsigned n) {
 }
 
 bool lastFirstBit(unsigned n) {
-	return (n & (1 << (sizeof(unsigned) * 8 - 1)) && n & 1);
+	return (n & (1 << (sizeof(unsigned) * 8 - 1)) && (n & 1) );
 }
 
 
@@ -61,7 +61,7 @@ void writeToFile(FileData fileData, const char fileName[]) {
 	fprintf_s(pFile, "%d\n", fileData.count);
 
 	for (int i = 0; i < fileData.count; i++) {
-		fprintf_s(pFile, "%d\n", fileData.data[i]);
+		fprintf_s(pFile, "%u\n", fileData.data[i]);
 	}
 }
 
