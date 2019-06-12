@@ -143,8 +143,17 @@ int main()
 
 	FileData fileData;
 	fileData = readFromFile();
+	int koniec = 0;
+	int wybor = 0;
+	while (!koniec)
+	{
+		printf("wybierz opcje:\n1 \n2 \n3 \n0-koniec\n");
+		scanf_s("%d", &wybor);
 
-	A(fileData);
-	B(fileData);
-	C(fileData);
+		if (0 < wybor && wybor < 4)
+			functions[wybor - 1](fileData);
+		if (wybor == 0) koniec = true;
+		//else printf_s("Blad"); 
+	}
+
 }
